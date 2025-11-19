@@ -1,0 +1,57 @@
+TASKS FOR URL SHORTENER PROJECT
+
+1. Project Setup
+   - Initialize Node.js project with npm
+   - Install required packages (express, mongoose, nanoid, dotenv, valid-url, helmet, cors, morgan, rate-limiter)
+
+2. Basic Server
+   - Create index.js
+   - Setup Express app
+   - Add middlewares (express.json, helmet, cors, morgan, rate limiter)
+
+3. Database Setup
+   - Connect to MongoDB with mongoose
+   - Create URL schema (code, longUrl, shortUrl, clicks, createdAt, expireAt, lastAccess)
+   - Export URL model
+
+4. Utility Functions
+   - Generate unique short code with nanoid
+   - Validate input URL
+   - Normalize long URL (ensure http/https)
+
+5. Routes
+   - POST /api/shorten → create new short URL
+   - GET /:code → redirect to original URL
+   - GET /api/stats/:code → fetch analytics (clicks, createdAt, lastAccess)
+
+6. Controllers
+   - Implement controller logic for each route
+   - Increment clicks count on redirect
+   - Handle errors & invalid codes gracefully
+
+7. Middleware
+   - Logger middleware
+   - Error handler middleware
+   - Rate limiter on shorten endpoint
+
+8. Testing
+   - Unit tests for short code generator & validation
+   - Integration tests for POST and GET routes
+
+9. Optional Features
+   - Support custom aliases
+   - Add QR code generator
+   - Add TTL/expiry for links
+   - Cache lookups with Redis
+   - User authentication (per-user limits)
+
+10. Deployment
+   - Prepare .env (BASE_URL, MONGO_URI)
+   - Deploy backend (Railway/Render/Heroku)
+   - Use MongoDB Atlas
+   - Configure domain & HTTPS
+
+11. Monitoring
+   - Add logging (winston / morgan)
+   - Add error tracking (Sentry)
+   - Track request performance

@@ -10,6 +10,7 @@ async function handleGenerateNewShortURL(req, res) {
         shortId: shortID,
         redirectURL: body.url,
         visitHistory: [],
+        createdBy: req.userId || null,
     });
 return res.redirect('/');
 }
@@ -17,7 +18,7 @@ return res.redirect('/');
 
 async function handleGetAnalytics(req, res) {
     const shortId = req.params.shortId;
-    const result = await URL.findOne({ shortId });
+    const result = await URL.findOne({ shortId, createdBy: req.userId });
     
     if (!result) {
         return res.status(404).json({ error: "URL not found" });
@@ -29,7 +30,17 @@ async function handleGetAnalytics(req, res) {
     });
 }
 
+async function handleDeleteMany(req, res) {
+    const { shortIds } = req.body;
+    if (!Array.isArray(shortIds) || shortIds.length === 0) {
+        return res.status(400).json({ error: "shortIds array is required" });
+    }
+    const result = await URL.deleteMany({ shortId: { $in: shortIds }, createdBy: req.userId });
+    return res.json({ deletedCount: result.deletedCount });
+}
+
 module.exports = {
     handleGenerateNewShortURL,
     handleGetAnalytics,
+    handleDeleteMany,
 };

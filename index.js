@@ -3,9 +3,10 @@ const express = require("express");
 const path = require("path");
 
 const { connectMongodb } = require("./connect");
-const urlRoute = require('./routes/url');
-const { URL } = require("./models/url");
 
+const { URL } = require("./models/url");
+const urlRoute = require('./routes/url');
+const userRoute = require('./routes/user');
 
 // create a app using express
 const app = express();
@@ -18,10 +19,14 @@ app.set("views", path.resolve("./views"));
 // middleware to parse json body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// cookie and auth middleware
+const { cookieParser, attachUserFromSession, requireAuth } = require("./middleware/auth");
+app.use(cookieParser);
+app.use(attachUserFromSession);
 // Add this route to your main server file
-app.get("/", async (req, res) => {
+app.get("/", requireAuth, async (req, res) => {
     // Find all URLs in the database
-    const allUrls = await URL.find({});
+    const allUrls = await URL.find({ createdBy: req.userId });
     
     // Render the 'home' view and pass the data
     return res.render("home", {
@@ -29,8 +34,18 @@ app.get("/", async (req, res) => {
     });
 });
 
+// Root routes for auth pages
+app.get("/login", (req, res) => {
+    return res.render("login");
+});
+app.get("/signup", (req, res) => {
+    return res.render("signup");
+});
+
 
 app.use("/url", urlRoute);
+app.use("/user", userRoute);
+
 
 app.get('/:shortId',async (req, res) => {
     const shortId = req.params.shortId;

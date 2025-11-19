@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            /* display: flex; */
+            /* justify-content: center; */
+            /* align-items: flex-start;  */
+            /* Aligns content to the top */
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px; /* Add some padding for smaller screens */
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+</head>
+<body>
+    <h1>Signup</h1>
+    <form action ="/user/signup" method = "post">
+        <label >Full name</label>
+        <input type="text" required name ="name">
+        <label >Email</label>
+        <input type="text" required name ="email">
+        <label >Password</label>
+        <input type="password" required name ="password">
+        <button type="submit">Signup</button>
+    </form>
+    
+</body>
+</html>
